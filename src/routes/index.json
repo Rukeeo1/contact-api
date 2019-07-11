@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "name": "Valeri Obi",
+      "email": "obichiz@gmail.com",
+      "phone": "0818-384-0096",
+      "company": "okon and sons",
+      "isBlocked": "false"
+    },
+    {
+      "id": 2,
+      "name": "Anita Obi",
+      "email": "anitachiz@gmail.com",
+      "phone": "0818-000-0000",
+      "company": "anita and sons",
+      "isBlocked": "false"
+    },
+    {
+      "id": 3,
+      "name": "Johnson Okoro",
+      "email": "okorojohnson@gmail.com",
+      "phone": "0818-001-0001",
+      "company": "okoro and sons",
+      "isBlocked": "false"
+    }
+  ]
+
