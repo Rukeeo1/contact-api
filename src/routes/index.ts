@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import fs from 'fs';
+// import { func } from '@hapi/joi';
 
 // import  contact from '../../data/contact'
 const contact = require('../../data/contact');
@@ -16,14 +17,13 @@ router.get('/', function(_req, res) {
 //   console.log('hello');
 //   res.json(contact);
 // });
+
 router.get('/api/contacts', (_req, res: any) => {
   fs.readFile('./src/routes/index.json', 'utf8', function(err, data) {
     if (err) throw err;
     let contacts = JSON.parse(data);
     res.send(contacts);
   });
-
-  console.log('i was here');
 });
 
 router.get('/api/contacts/:id', (req, res) => {
@@ -46,5 +46,9 @@ router.get('/api/contacts/:id', (req, res) => {
     }
   });
 });
+
+router.post('/api/contacts', (req, res) => {
+
+})
 
 export default router;
