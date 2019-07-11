@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import uuid from 'uuid';
 import fs from 'fs';
 // import { func } from '@hapi/joi';
 
@@ -48,7 +49,7 @@ router.get('/api/contacts/:id', (req, res) => {
 });
 
 router.post('/api/contacts', (req, res) => {
-
-})
+  res.send(req.body);
+});
 
 export default router;

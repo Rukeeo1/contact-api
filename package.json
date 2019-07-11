@@ -12,6 +12,7 @@
     "@hapi/joi": "^15.1.0",
     "@types/hapi__joi": "^15.0.2",
     "@types/supertest": "^2.0.8",
+    "@types/uuid": "^3.4.5",
     "cookie-parser": "1.4.4",
     "debug": "4.1.1",
     "express": "^4.17.1",
