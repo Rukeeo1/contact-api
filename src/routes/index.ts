@@ -1,8 +1,7 @@
 import { Router } from 'express';
 import uuid from 'uuid';
-import joi, { any } from '@hapi/joi';
+import joi from '@hapi/joi';
 import fs from 'fs';
-// import { func } from '@hapi/joi';
 
 // import  contact from '../../data/contact'
 const contacts = require('../../data/contact');
@@ -13,6 +12,20 @@ const router = Router();
 router.get('/', function(_req, res) {
   res.render('index', { title: 'Express' });
 });
+
+/*
+function writeToJson(parameter:object[]){
+  fs.writeFile('./src/routes/index.json', parameter, 'utf8', function(
+    err: Error,
+    data: object[]
+  ): any {
+    if (err) throw err;
+
+    console.log(data);
+  });
+}
+
+*/
 
 //get everyone in the contact list...
 // router.get('/api/contacts', (_req, res: any) => {
@@ -32,15 +45,15 @@ router.get('/api/contacts/:id', (req, res) => {
   fs.readFile('./src/routes/index.json', 'utf8', function(err, data) {
     if (err) throw err;
     let contacts = JSON.parse(data);
-
+    console.log(contacts);
     const found = contacts.some(
-      (contact: { id: number }) => contact.id === Number(req.params.id)
+      (contact: { id: string }) => contact.id === req.params.id
     );
 
     if (found) {
       res.json(
         contacts.filter(
-          (contact: { id: number }) => contact.id === Number(req.params.id)
+          (contact: { id: string }) => contact.id === req.params.id
         )
       );
     } else {
@@ -79,7 +92,7 @@ interface Home {
   company?: string;
   isBlocked: false;
 }
-let rukee
+
 router.post('/api/contacts', (req, res) => {
   const { error, value } = joi.validate<Home>(req.body, schema, {
     abortEarly: false,
@@ -97,34 +110,73 @@ router.post('/api/contacts', (req, res) => {
     isBlocked: false
   };
 
-   contacts.push(newContact)
-
+  contacts.push(newContact);
 
   res.status(200).json({ data: contacts });
 
- 
   //let updatedContactList = JSON.stringify([...contacts, newContact]);
-  let updatedContactList = JSON.stringify(contacts)
-  //console.log(updatedContactList);
+  let updatedContactList = JSON.stringify(contacts);
 
-  console.log(updatedContactList)
   fs.writeFile('./src/routes/index.json', updatedContactList, 'utf8', function(
     err: Error,
     data: object[]
   ): any {
     if (err) throw err;
-    // res.json(data);
-  console.log(data)
-  });
-  //at this point before we send a response, we want to add the item to the
-  //array
-  
-/*
-  // res.status(200).json({ data: `Welcome home ${newContact}` });
 
-  */
+    console.log(data);
+  });
 });
 
+router.put('/api/contacts/:id', (req, res) => {
+  fs.readFile('./src/routes/index.json', 'utf8', function(err, data) {
+    if (err) throw err;
+    let contacts = JSON.parse(data);
 
+    const found = contacts.some(
+      (contact: { id: string }) => contact.id === req.params.id
+    ); //check to see if the nmember exist
+
+    if (found) {
+      const updatedMember = req.body;
+
+      contacts.forEach((contact )=> {
+        if (contact.id === req.params.id) {
+          contact.name = updatedMember.name ? updatedMember.name : contact.name;
+          contact.email = updatedMember.email
+            ? updatedMember.email
+            : contact.email;
+          contact.phone = updatedMember.phone
+            ? updatedMember.phone
+            : contact.phone;
+          contact.company = updatedMember.company
+            ? updatedMember.company
+            : contact.company;
+          contact.isBlocked = updatedMember.isBlocked
+            ? updatedMember.isBlocked
+            : contact.isBlocked;
+
+          res.json({ msg: 'contact was updated', contact });
+
+          fs.writeFile('./src/routes/index.json', contacts, 'utf8', function(
+            err: Error,
+            data: object[]
+          ): any {
+            if (err) throw err;
+
+            console.log(data);
+          });
+        }
+      });
+    } else {
+      res.status(400).json({ msg: 'Member not Found' });
+    }
+  });
+});
+
+//i see a put request,
+//but i dont' see a delete request...
+//how do i get a
+
+console.log(contacts);
 
 export default router;
