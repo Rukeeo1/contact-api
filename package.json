@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon scr/app.ts",
+    "dev": "tsc && nodemon scr/app.ts",
     "build": "tsc -p .",
     "test": "jest"
   },

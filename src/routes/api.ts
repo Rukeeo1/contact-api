@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import joi from '@hapi/joi';
 
-
 const router = Router();
 
 /* GET home page. */
