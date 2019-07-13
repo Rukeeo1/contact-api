@@ -11,17 +11,18 @@ router.get('/', function(_req, res) {
   res.render('index', { title: 'Express' });
 });
 
+function writeToJson(parameter: object[]) {
+  let toJson = JSON.stringify(parameter);
+  fs.writeFile(
+    '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
+    toJson,
+    'utf8',
+    function(err: Error, data: object[]): any {
+      if (err) throw err;
 
-function writeToJson(parameter:object[]){
-  let toJson = JSON.stringify(parameter)
-  fs.writeFile('/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',toJson, 'utf8', function(
-    err: Error,
-    data: object[]
-  ): any {
-    if (err) throw err;
-
-    console.log(data);
-  });
+      console.log(data);
+    }
+  );
 }
 
 router.get('/api/contacts', (_req, res: any) => {
@@ -108,25 +109,10 @@ router.post('/api/contacts', (req, res) => {
     ...value,
     isBlocked: false
   };
-
   contacts.push(newContact);
-
   res.status(200).json({ data: contacts });
 
-  //let updatedContactList = JSON.stringify([...contacts, newContact]);
-  let updatedContactList = JSON.stringify(contacts);
-
-  fs.writeFile(
-    '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
-    updatedContactList,
-    'utf8',
-    function(err: Error, data: object[]): any {
-      if (err) throw err;
-
-      console.log(data);
-    }
-  );
-  
+  writeToJson(contacts);
 });
 
 router.put('/api/contacts/:id', (req, res) => {
@@ -164,16 +150,7 @@ router.put('/api/contacts/:id', (req, res) => {
 
             res.json({ msg: 'contact was updated', contact });
 
-            fs.writeFile(
-              '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
-              JSON.stringify(contacts),
-              'utf8',
-              function(err: Error, data: object[]): any {
-                if (err) throw err;
-
-                console.log(data);
-              }
-            );
+            writeToJson(contacts);
           }
         });
       } else {
@@ -190,33 +167,23 @@ router.delete('/api/contacts/:id', (req, res) => {
     function(err, data) {
       if (err) throw err;
       let contacts = JSON.parse(data);
-     
+
       const found = contacts.some(
         (contact: { id: string }) => contact.id === req.params.id
       );
 
       if (found) {
-
-        const contactListAfterDelete  =    contacts.filter(
-            (contact: { id: string }) => contact.id !== req.params.id
-           )
-        res.json(
-          // contacts.filter(
-          //   (contact: { id: string }) => contact.id !== req.params.id
-          // )
-          contactListAfterDelete 
+        const contactListAfterDelete = contacts.filter(
+          (contact: { id: string }) => contact.id !== req.params.id
         );
-        writeToJson(contactListAfterDelete)
-
+        res.json(contactListAfterDelete);
+        writeToJson(contactListAfterDelete);
       } else {
         res.status(400).json({ msg: 'Member not Found' });
       }
     }
   );
 });
-//i see a put request,
-//but i dont' see a delete request...
-//how do i get a
 
 console.log(contacts);
 
