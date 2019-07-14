@@ -112,7 +112,8 @@ router.post('/api/contacts', (req, res) => {
     isBlocked: false
   };
   contacts.push(newContact);
-  res.status(200).json({ data: contacts });
+  //res.status(200).json(contacts);
+  res.status(200).json(contacts);
 
   //writeToJson(contacts);
 });

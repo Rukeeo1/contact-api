@@ -102,7 +102,7 @@ router.post('/api/contacts', (req, res) => {
   });
 
   if (error) {
-    res.status(404).json(error);
+    res.status(404).send(error);
     return;
   }
 
