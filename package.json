@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon scr/app.ts",
     "build": "tsc -p .",
-    "test": "jest --watch"
+    "test": "jest --watch --coverage"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.0",
