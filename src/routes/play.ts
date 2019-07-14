@@ -11,19 +11,19 @@ router.get('/', function(_req, res) {
   res.render('index', { title: 'Express' });
 });
 
-function writeToJson(parameter: object[]) {
-  let toJson = JSON.stringify(parameter);
-  fs.writeFile(
-    '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
-    toJson,
-    'utf8',
-    function(err: Error, data: object[]) {
-      if (err) throw err;
+//function writeToJson(parameter: object[]) {
+  //let toJson = JSON.stringify(parameter);
+//   fs.writeFile(
+//     '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
+//     toJson,
+//     'utf8',
+//     function(err: Error, data: object[]): any {
+//       if (err) throw err;
 
-      console.log(data);
-    }
-  );
-}
+//       console.log(data);
+//     }
+//   );
+//}
 
 //returns an array of the contact object
 router.get('/api/contacts', (_req, res: any) => {
@@ -114,7 +114,7 @@ router.post('/api/contacts', (req, res) => {
   contacts.push(newContact);
   res.status(200).json({ data: contacts });
 
-  writeToJson(contacts);
+  //writeToJson(contacts);
 });
 
 router.put('/api/contacts/:id', (req, res) => {
@@ -152,7 +152,7 @@ router.put('/api/contacts/:id', (req, res) => {
 
             res.json({ msg: 'contact was updated', contact });
 
-            writeToJson(contacts);
+            //writeToJson(contacts);
           }
         });
       } else {
@@ -179,7 +179,7 @@ router.delete('/api/contacts/:id', (req, res) => {
           (contact: { id: string }) => contact.id !== req.params.id
         );
         res.json(contactListAfterDelete);
-        writeToJson(contactListAfterDelete);
+        //writeToJson(contactListAfterDelete);
       } else {
         res.status(400).json({ msg: 'Member not Found' });
       }
@@ -189,9 +189,9 @@ router.delete('/api/contacts/:id', (req, res) => {
 
 ///api/contacts
 router.get('/dummy', (_req,res) =>{
-  return res.json('i worked')
+  return res.send('i worked')
 })
 
-export default router;
+//export default router;
 
-// module.exports = router
+module.exports = router

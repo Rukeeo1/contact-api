@@ -44,4 +44,4 @@ router.post('/home', (req, res) => {
   res.status(200).json({ data: `Welcome home ${value.fullName}` });
 });
 
-export default router;
+//export default router;
