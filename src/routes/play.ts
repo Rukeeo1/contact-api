@@ -3,25 +3,50 @@ import uuid from 'uuid';
 import joi from '@hapi/joi';
 import fs from 'fs';
 
-const contacts = require('../../data/contact');
+// const contacts = require('../../data/contact');
 const router = Router();
+
+const contacts = [
+  {
+    "id": "1",
+    "name": "Valeri Obi",
+    "email": "obichiz@gmail.com",
+    "mobile": "0818-384-0096",
+    "company": "okon and sons",
+    "isBlocked": "false"
+  },
+  {
+    "id": "2",
+    "name": "Anita Obi",
+    "email": "anitachiz@gmail.com",
+    "mobile": "0818-000-0000",
+    "company": "anita and sons",
+    "isBlocked": "false"
+  },
+  {
+    "id": "3",
+    "name": "Johnson Okoro",
+    "email": "okorojohnson@gmail.com",
+    "mobile": "0818-001-0001",
+    "company": "okoro and sons",
+    "isBlocked": "false"
+  },
+  {
+    "id": "59492983-246d-4808-af0f-9be014a4ce62",
+    "name": "xxxxxxn",
+    "email": "xxxxxx@gmail.com",
+    "mobile": "0818-384-0096",
+    "isBlocked": "false"
+  }
+]
+
 
 /* GET home page. */
 router.get('/', function(_req, res) {
   res.render('index', { title: 'Express' });
 });
 
-function writeToJson(parameter: object[]) {
-  let toJson = JSON.stringify(parameter);
-  fs.writeFile(
-    '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
-    toJson,
-    'utf8',
-    function(err): any {
-      if (err) throw err;
-    }
-  );
-}
+
 
 //returns an array of the contact object
 router.get('/api/contacts', (_req, res: any) => {
@@ -38,13 +63,6 @@ router.get('/api/contacts', (_req, res: any) => {
 
 //returns a single contact
 router.get('/api/contacts/:id', (req, res) => {
-  fs.readFile(
-    '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
-    'utf8',
-    function(err, data) {
-      if (err) throw err;
-      let contacts = JSON.parse(data);
-
       const found = contacts.some(
         (contact: { id: string }) => contact.id === req.params.id
       );
@@ -58,8 +76,7 @@ router.get('/api/contacts/:id', (req, res) => {
       } else {
         res.status(400).json({ msg: 'Member not Found' });
       }
-    }
-  );
+    
 });
 
 //my scheman validates name...
@@ -104,26 +121,17 @@ router.post('/api/contacts', (req, res) => {
     return;
   }
 
-  const newContact = {
+  const newContact :any= {
     id: uuid.v4(),
     ...value,
-    isBlocked: false
+    isBlocked: "false"
   };
   contacts.push(newContact);
   //res.status(200).json(contacts);
   res.status(200).json(contacts);
-
-  writeToJson(contacts);
 });
 
 router.put('/api/contacts/:id', (req, res) => {
-  fs.readFile(
-    '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
-    'utf8',
-    function(err, data) {
-      if (err) throw err;
-      let contacts = JSON.parse(data);
-
       const found = contacts.some(
         (contact: { id: string }) => contact.id === req.params.id
       );
@@ -150,15 +158,12 @@ router.put('/api/contacts/:id', (req, res) => {
               : contact.isBlocked;
 
             res.json({ msg: 'contact was updated', contact });
-
-            //writeToJson(contacts);
           }
         });
       } else {
         res.status(400).json({ msg: 'Member not Found' });
       }
-    }
-  );
+    
 });
 
 router.delete('/api/contacts/:id', (req, res) => {
@@ -178,7 +183,7 @@ router.delete('/api/contacts/:id', (req, res) => {
           (contact: { id: string }) => contact.id !== req.params.id
         );
         res.json(contactListAfterDelete);
-        //writeToJson(contactListAfterDelete);
+
       } else {
         res.status(400).json({ msg: 'Member not Found' });
       }
