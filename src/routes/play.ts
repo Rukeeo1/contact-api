@@ -11,19 +11,17 @@ router.get('/', function(_req, res) {
   res.render('index', { title: 'Express' });
 });
 
-//function writeToJson(parameter: object[]) {
-  //let toJson = JSON.stringify(parameter);
-//   fs.writeFile(
-//     '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
-//     toJson,
-//     'utf8',
-//     function(err: Error, data: object[]): any {
-//       if (err) throw err;
-
-//       console.log(data);
-//     }
-//   );
-//}
+function writeToJson(parameter: object[]) {
+  let toJson = JSON.stringify(parameter);
+  fs.writeFile(
+    '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
+    toJson,
+    'utf8',
+    function(err): any {
+      if (err) throw err;
+    }
+  );
+}
 
 //returns an array of the contact object
 router.get('/api/contacts', (_req, res: any) => {
@@ -115,7 +113,7 @@ router.post('/api/contacts', (req, res) => {
   //res.status(200).json(contacts);
   res.status(200).json(contacts);
 
-  //writeToJson(contacts);
+  writeToJson(contacts);
 });
 
 router.put('/api/contacts/:id', (req, res) => {

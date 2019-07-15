@@ -17,10 +17,8 @@ function writeToJson(parameter: object[]) {
     '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
     toJson,
     'utf8',
-    function(err: Error, data: object[]) {
+    function(err) {
       if (err) throw err;
-
-      console.log(data);
     }
   );
 }
