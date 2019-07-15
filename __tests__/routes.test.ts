@@ -36,27 +36,11 @@ describe('GET ALL CONTACTS', () => {
           email: 'xxxxxx@gmail.com',
           mobile: '0818-384-0096',
           isBlocked: 'false'
-        },
-        {
-          id: 'abad3d6c-456e-4a7b-9d7d-6c56e4910638',
-          name: 'Sharon Stone',
-          email: 'sharon@gmail.com',
-          mobile: '0803-668-7418',
-          isBlocked: 'false'
         }
       ]);
   });
 });
 
-describe('it should return hello world', () => {
-  it('should return hello world', () => {
-    return request(app)
-      .get('/dummy')
-      .expect('i worked');
-  });
-});
-
-//'/api/contacts/:id'
 describe('GET BY ID', () => {
   it('Should return the contact with the given id', () => {
     return request(app)
@@ -95,11 +79,35 @@ describe('POST', () => {
       .expect('Content-Type', /json/)
       .expect(200);
   });
+
+  it('Should return the contact', () => {
+    const incompleteUserObject = {
+      email: 'sharon@gmail.com',
+      company: 'we are here',
+      isBlocked: 'false'
+    };
+    return request(app)
+      .post('/api/contacts')
+      .send(incompleteUserObject)
+      .expect('Content-Type', /json/)
+      .expect(404, [
+        {
+          message: '"name" is required',
+          path: ['name'],
+          type: 'any.required',
+          context: { key: 'name', label: 'name' }
+        },
+        {
+          message: '"mobile" is required',
+          path: ['mobile'],
+          type: 'any.required',
+          context: { key: 'mobile', label: 'mobile' }
+        }
+      ]);
+  });
 });
 
 describe('PUT', () => {
-  //SHOULD update the member with the given id
-  //should return member not found if a wrong id is passed in
   it('should return the updated member', () => {
     return request(app)
       .put('/api/contacts/3')
@@ -134,6 +142,14 @@ describe('PUT', () => {
           isBlocked: 'true'
         }
       });
+  });
+
+  it('should be able to block and unblock contact', () => {
+    return request(app)
+      .put('/api/contacts/xxjkas;djkfs;df')
+      .send({ name: 'Wesley Snipes' })
+      .expect('Content-Type', /json/)
+      .expect(400, { msg: 'Member not Found' });
   });
 });
 
@@ -179,5 +195,33 @@ describe('DELETE', () => {
     return request(app)
       .delete('/api/contacts/118136af-98af-4752-a3fa-7e5560d6ee45')
       .expect(400, { msg: 'Member not Found' });
+  });
+});
+
+//'/api/contacts/blocked'
+describe('BLOCKED CONTACTS', () => {
+  it('should return the contacts with isBlocked is false', () => {
+    return request(app)
+      .get('/api/blocked')
+      .expect(200, [
+        {
+          id: '3',
+          name: 'Updated Johnson Okoro',
+          email: 'okorojohnson@gmail.com',
+          mobile: '0818-001-0001',
+          company: 'okoro and sons',
+          isBlocked: 'true'
+        }
+      ]);
+  });
+});
+
+describe('HOMEPAGE', () => {
+  it('should return contact api as title', () => {
+    return request(app)
+      .get('/')
+      .expect(
+        '<!DOCTYPE html><html><head><title>Contact Api</title><link rel="stylesheet" href="/stylesheets/style.css"></head><body><h1>Contact Api</h1><p>Welcome to Contact Api</p></body></html>'
+      );
   });
 });
