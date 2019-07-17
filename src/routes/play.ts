@@ -46,15 +46,7 @@ router.get('/', function(_req, res) {
 
 //returns an array of the contact object
 router.get('/api/contacts', (_req, res: any) => {
-  // fs.readFile(
-  //   '/Users/rukeeo1/Downloads/Compressed/express-starter/data/contact.json',
-  //   'utf8',
-  //   function(err, data) {
-  //     if (err) throw err;
-  //     let contacts = JSON.parse(data);
-      res.send(contacts);
-    // }
-  // );
+  res.send(contacts);
 });
 
 //returns a single contact
