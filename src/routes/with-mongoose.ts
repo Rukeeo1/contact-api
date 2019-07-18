@@ -18,6 +18,15 @@ router.get('/', async (_req: Request, res: any) => {
   res.send(contacts);
 });
 
+router.get('/:id', async (req: any, res: any) => {
+  try {
+    const contact = await Contact.findById(req.params.id);
+    res.send(contact);
+  } catch (error) {
+    return res.status(404).send("the contact with that id doesn't exist");
+  }
+});
+
 router.post('/', async (req: any, res: any) => {
   const { error } = validate(req.body); //joi validates the body
   if (error) return res.status(400).send(error.details[0].message); //sends an error if there's any
@@ -62,4 +71,5 @@ router.delete('/:id', async (req: any, res: any) => {
     return res.status(404).send('The contact you serach for doesnt exist');
   }
 });
+
 module.exports = router;
