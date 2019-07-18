@@ -3,10 +3,21 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import mongoose from 'mongoose';
 
-const indexRouter = require('./routes/play')
+const indexRouter = require('./routes/play');
+const contactRouter = require('./routes/with-mongoose');
 
 const app = express();
+
+mongoose
+  .connect('mongodb://localhost/phonebook')
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
@@ -19,7 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', indexRouter);
-
+app.use('/api/phonebook', contactRouter);
 
 // catch 404 and forward to error handler
 app.use(function(_req, _res, next) {

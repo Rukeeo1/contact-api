@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
 /*
@@ -59,7 +59,7 @@ const contactSchema = new mongoose.Schema({
   }
 });
 
-const Contact = mongoose.model('Contact', contactSchema);
+const ContactModel = mongoose.model('Contact', contactSchema);
 
 function validateContact(contact) {
   const schema = {
@@ -75,3 +75,6 @@ function validateContact(contact) {
 
   return Joi.validate(contact, schema);
 }
+
+exports.Contact = ContactModel;
+exports.validate = validateContact;
