@@ -1,3 +1,5 @@
+// import { string } from '@hapi/joi';
+
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
@@ -37,7 +39,7 @@ const contacts = [
   ];
 */
 
-const contactSchema = new mongoose.Schema({
+const contactSchema = new mongoose.Schema({//create a schema: the structure of the data you want to save
   name: {
     type: String,
     required: true,
@@ -53,23 +55,27 @@ const contactSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 15
   },
+  company: {
+    type: String,
+    minlength: 5,
+    maxlength: 15
+  },
   isBlocked: {
     type: Boolean,
     default: true
   }
 });
 
-const ContactModel = mongoose.model('Contact', contactSchema);
+const ContactModel = mongoose.model('Contact', contactSchema);//compress that into a model
 
-function validateContact(contact) {
+function validateContact(contact:any) {//joi validation....we use both for double check...
   const schema = {
     name: Joi.string()
       .min(3)
       .required(),
     email: Joi.string().email(),
-    phone: Joi.string()
-      .regex(/^\d{3}-\d{3}-\d{4}$/)
-      .required(),
+    // mobile: Joi.required(),
+    mobile: Joi.string().regex(/^\d{4}-\d{3}-\d{4}$/),
     isBlocked: Joi.boolean()
   };
 
@@ -78,3 +84,5 @@ function validateContact(contact) {
 
 exports.Contact = ContactModel;
 exports.validate = validateContact;
+// .number()
+//       .regex(/^\w{3}-\w{3}-\w{4}$/)
