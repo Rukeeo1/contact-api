@@ -52,10 +52,14 @@ router.put('/:id', async (req: any, res: any) => {
   }
 });
 
-router.delete('/:id', async (req:any, res:any) => {
-  const contact = await Contact.findByIdAndRemove(req.params.id);
-  if (!contact)
+router.delete('/:id', async (req: any, res: any) => {
+  try {
+    const contact = await Contact.findByIdAndRemove(req.params.id);
+    if (!contact)
+      return res.status(404).send('The contact you serach for doesnt exist');
+    res.send(contact);
+  } catch (error) {
     return res.status(404).send('The contact you serach for doesnt exist');
-  res.send(contact);
+  }
 });
 module.exports = router;
