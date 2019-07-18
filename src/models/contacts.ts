@@ -39,7 +39,8 @@ const contacts = [
   ];
 */
 
-const contactSchema = new mongoose.Schema({//create a schema: the structure of the data you want to save
+const contactSchema = new mongoose.Schema({
+  //create a schema: the structure of the data you want to save
   name: {
     type: String,
     required: true,
@@ -58,7 +59,7 @@ const contactSchema = new mongoose.Schema({//create a schema: the structure of t
   company: {
     type: String,
     minlength: 5,
-    maxlength: 15
+    maxlength: 50
   },
   isBlocked: {
     type: Boolean,
@@ -66,15 +67,16 @@ const contactSchema = new mongoose.Schema({//create a schema: the structure of t
   }
 });
 
-const ContactModel = mongoose.model('Contact', contactSchema);//compress that into a model
+const ContactModel = mongoose.model('Contact', contactSchema); //compress that into a model
 
-function validateContact(contact:any) {//joi validation....we use both for double check...
+function validateContact(contact: any) {
+  //joi validation....we use both for double check...
   const schema = {
     name: Joi.string()
       .min(3)
       .required(),
     email: Joi.string().email(),
-    // mobile: Joi.required(),
+    company: Joi.string(),
     mobile: Joi.string().regex(/^\d{4}-\d{3}-\d{4}$/),
     isBlocked: Joi.boolean()
   };
@@ -84,5 +86,3 @@ function validateContact(contact:any) {//joi validation....we use both for doubl
 
 exports.Contact = ContactModel;
 exports.validate = validateContact;
-// .number()
-//       .regex(/^\w{3}-\w{3}-\w{4}$/)

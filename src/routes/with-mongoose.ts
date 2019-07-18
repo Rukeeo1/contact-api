@@ -30,9 +30,14 @@ router.post('/', async (req: any, res: any) => {
     company: req.body.company,
     isBlocked: req.body.isBlocked
   });
-  contact = await contact.save(); //save the contact wait for a response
+  try {
+    contact = await contact.save(); //save the contact wait for a response
 
-  res.send(contact); // send the response back to the client
+    res.send(contact); // send the response back to the client
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).send(error.message)
+  }
 });
 
 module.exports = router;
