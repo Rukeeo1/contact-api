@@ -3,19 +3,20 @@ import express from 'express';
 //const express = require('express');
 const router = express.Router();
 const { Contact, validate } = require('../models/contacts');
-/*
-
-id: '1',
-      name: 'Valeri Obi',
-      email: 'obichiz@gmail.com',
-      mobile: '0818-384-0096',
-      company: 'okon and sons',
-      isBlocked: 'false'
-*/
 
 router.get('/', async (_req: Request, res: any) => {
   const contacts = await Contact.find().sort('name');
   res.send(contacts);
+});
+
+router.get('/blocked', async (_req, res) => {
+  const contacts = await Contact.find().sort('name');
+  const blockedContacts = contacts.filter((contact: any) => {
+  
+    return contact['isBlocked'] === true
+ 
+  });
+  res.send(blockedContacts);
 });
 
 router.get('/:id', async (req: any, res: any) => {
