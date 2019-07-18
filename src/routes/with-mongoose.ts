@@ -32,11 +32,30 @@ router.post('/', async (req: any, res: any) => {
   });
   try {
     contact = await contact.save(); //save the contact wait for a response
-
     res.send(contact); // send the response back to the client
   } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+router.put('/:id', async (req: any, res: any) => {
+  const { error } = validate(req.body); //if wrong details are passed in...it throws an erro
+  if (error) return res.status(400).send(error.details[0].message);
+  try {
+    const contact = await Contact.findByIdAndUpdate(
+      //finds the contact by his id and updates
+      //findone...
+      req.params.id,
+      req.body,
+      {
+        new: true
+      }
+    );
+
+    res.send(contact); //returns the contact...after update
+  } catch (error) {
     console.log(error.message);
-    res.status(400).send(error.message)
+    return res.status(404).send("there's no contact with that id");
   }
 });
 
