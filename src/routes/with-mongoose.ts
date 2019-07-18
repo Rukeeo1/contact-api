@@ -42,21 +42,20 @@ router.put('/:id', async (req: any, res: any) => {
   const { error } = validate(req.body); //if wrong details are passed in...it throws an erro
   if (error) return res.status(400).send(error.details[0].message);
   try {
-    const contact = await Contact.findByIdAndUpdate(
-      //finds the contact by his id and updates
-      //findone...
-      req.params.id,
-      req.body,
-      {
-        new: true
-      }
-    );
+    const contact = await Contact.findByIdAndUpdate(req.params.id, req.body, {
+      new: true
+    });
 
     res.send(contact); //returns the contact...after update
   } catch (error) {
-    console.log(error.message);
     return res.status(404).send("there's no contact with that id");
   }
 });
 
+router.delete('/:id', async (req:any, res:any) => {
+  const contact = await Contact.findByIdAndRemove(req.params.id);
+  if (!contact)
+    return res.status(404).send('The contact you serach for doesnt exist');
+  res.send(contact);
+});
 module.exports = router;
