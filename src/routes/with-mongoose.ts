@@ -1,6 +1,5 @@
-//import mongoose from 'mongoose';
 import express from 'express';
-//const express = require('express');
+
 const router = express.Router();
 const { Contact, validate } = require('../models/contacts');
 
@@ -12,25 +11,23 @@ router.get('/', async (_req: Request, res: any) => {
 router.get('/blocked', async (_req, res) => {
   const contacts = await Contact.find().sort('name');
   const blockedContacts = contacts.filter((contact: any) => {
-  
-    return contact['isBlocked'] === true
- 
+    return contact['isBlocked'] === true;
   });
   res.send(blockedContacts);
 });
 
-router.get('/:id', async (req: any, res: any) => {
+router.get('/:id', async (req, res) => {
   try {
     const contact = await Contact.findById(req.params.id);
     res.send(contact);
   } catch (error) {
-    return res.status(404).send("the contact with that id doesn't exist");
+     res.status(404).send("the contact with that id doesn't exist");
   }
 });
 
-router.post('/', async (req: any, res: any) => {
+router.post('/', async (req, res) => {
   const { error } = validate(req.body); //joi validates the body
-  if (error) return res.status(400).send(error.details[0].message); //sends an error if there's any
+  if (error) res.status(400).send(error.details[0].message); //sends an error if there's any
 
   let contact = new Contact({
     //this is contact schema you defined.
@@ -48,9 +45,9 @@ router.post('/', async (req: any, res: any) => {
   }
 });
 
-router.put('/:id', async (req: any, res: any) => {
+router.put('/:id', async (req, res) => {
   const { error } = validate(req.body); //if wrong details are passed in...it throws an erro
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) res.status(400).send(error.details[0].message);
   try {
     const contact = await Contact.findByIdAndUpdate(req.params.id, req.body, {
       new: true
@@ -58,18 +55,17 @@ router.put('/:id', async (req: any, res: any) => {
 
     res.send(contact); //returns the contact...after update
   } catch (error) {
-    return res.status(404).send("there's no contact with that id");
+    res.status(404).send("there's no contact with that id");
   }
 });
 
-router.delete('/:id', async (req: any, res: any) => {
+router.delete('/:id', async (req, res) => {
   try {
     const contact = await Contact.findByIdAndRemove(req.params.id);
-    if (!contact)
-      return res.status(404).send('The contact you serach for doesnt exist');
+    if (!contact) res.status(404).send('The contact you serach for doesnt exist');
     res.send(contact);
   } catch (error) {
-    return res.status(404).send('The contact you serach for doesnt exist');
+    res.status(404).send('The contact you serach for doesnt exist');
   }
 });
 

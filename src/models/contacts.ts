@@ -1,43 +1,5 @@
-// import { string } from '@hapi/joi';
-
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
-
-/*
-const contacts = [
-    {
-      id: '1',
-      name: 'Valeri Obi',
-      email: 'obichiz@gmail.com',
-      mobile: '0818-384-0096',
-      company: 'okon and sons',
-      isBlocked: 'false'
-    },
-    {
-      id: '2',
-      name: 'Anita Obi',
-      email: 'anitachiz@gmail.com',
-      mobile: '0818-000-0000',
-      company: 'anita and sons',
-      isBlocked: 'false'
-    },
-    {
-      id: '3',
-      name: 'Johnson Okoro',
-      email: 'okorojohnson@gmail.com',
-      mobile: '0818-001-0001',
-      company: 'okoro and sons',
-      isBlocked: 'false'
-    },
-    {
-      id: '59492983-246d-4808-af0f-9be014a4ce62',
-      name: 'xxxxxxn',
-      email: 'xxxxxx@gmail.com',
-      mobile: '0818-384-0096',
-      isBlocked: 'false'
-    }
-  ];
-*/
 
 const contactSchema = new mongoose.Schema({
   //create a schema: the structure of the data you want to save

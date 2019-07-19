@@ -9,26 +9,25 @@ const indexRouter = require('./routes/play');
 const contactRouter = require('./routes/with-mongoose');
 
 const app = express();
-// const uri =
-//   'mongodb+srv://Rukee123:rukee212@my-first-cluster-wmvl4.mongodb.net/test?retryWrites=true&w=majority';
-
-// mongoose
-//   .connect(uri, { useNewUrlParser: true })
-//   .then(() => {
-//     console.log('Connected to MongoDB');
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
+const uri = 'mongodb+srv://Rukee123:rukee212@my-first-cluster-wmvl4.mongodb.net/test?retryWrites=true&w=majority';
 
 mongoose
-  .connect('mongodb://localhost/phonebook')
+  .connect(uri, { useNewUrlParser: true })
   .then(() => {
     console.log('Connected to MongoDB');
   })
   .catch(err => {
     console.log(err);
   });
+
+// mongoose
+//   .connect('mongodb://localhost/phonebook')
+//   .then(() => {
+//     console.log('Connected to MongoDB');
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   });
 
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
