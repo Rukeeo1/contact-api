@@ -21,7 +21,7 @@ router.get('/:id', async (req, res) => {
     const contact = await Contact.findById(req.params.id);
     res.send(contact);
   } catch (error) {
-     res.status(404).send("the contact with that id doesn't exist");
+    res.status(404).send("the contact with that id doesn't exist");
   }
 });
 
@@ -62,7 +62,8 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const contact = await Contact.findByIdAndRemove(req.params.id);
-    if (!contact) res.status(404).send('The contact you serach for doesnt exist');
+    if (!contact)
+      res.status(404).send('The contact you serach for doesnt exist');
     res.send(contact);
   } catch (error) {
     res.status(404).send('The contact you serach for doesnt exist');
